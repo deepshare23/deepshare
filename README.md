@@ -19,14 +19,14 @@ git clone --recurse-submodules git@github.com:deepshare23/deepshare.git
 
 2. Set ENVs 
 ```
-# DLCM
+# DEEPSHARE
 export DEEPSHARE_PATH="$HOME/deepshare"
 export DEEPSHARE_CONDA_ENV="deepshare+slurm"
 
 # SLURM
 export SLURM_BUILD_PATH="$HOME/slurm_build"
 export PATH="$SLURM_BUILD_PATH/bin:$PATH"
-export SLURM_CONF_DIR="$DLCM_PATH/slurm/etc"
+export SLURM_CONF_DIR="$DEEPSHARE_PATH/slurm/etc"
 export SLURM_CONF="$SLURM_CONF_DIR/slurm.conf"
 
 # HDFS
