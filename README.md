@@ -1,6 +1,6 @@
-# dlcm
+# DeepShare
 
-A resource sensitive elastic cluster manager
+DeepShare: RL-based Network Contention-Aware GPU Cluster Manager for Deep Learning
 
 ## How to build
 
@@ -14,14 +14,14 @@ Requires
 
 1. Clone 
 ```
-git clone --recurse-submodules git@github.com:jeongyooneo/dlcm.git
+git clone --recurse-submodules git@github.com:deepshare23/deepshare.git
 ```
 
 2. Set ENVs 
 ```
 # DLCM
-export DLCM_PATH="$HOME/dlcm"
-export DLCM_CONDA_ENV="dlcm+slurm"
+export DEEPSHARE_PATH="$HOME/deepshare"
+export DEEPSHARE_CONDA_ENV="deepshare+slurm"
 
 # SLURM
 export SLURM_BUILD_PATH="$HOME/slurm_build"
@@ -54,7 +54,7 @@ user = [HDFS user ID]
 
 3. Set up base conda env
 ```
-conda create -n dlcm+slurm python=3.9 -y
+conda create -n deepshare+slurm python=3.9 -y
 ```
 
 4. Set up packages (editable mode)
