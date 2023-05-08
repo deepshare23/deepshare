@@ -1,0 +1,7 @@
+,isolated thp
+MobileNetV3,341.68787
+GraphSage,40475.02965
+FSDP,2.16539
+Transformer-XL,13.54220963
+DLRM,4723.814029
+MoE,2.762587957
