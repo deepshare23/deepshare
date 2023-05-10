@@ -858,8 +858,6 @@ extern int slurm_open_controller_conn(slurm_addr_t *addr, bool *use_backup,
 	int i, retry, max_retry_period;
 	uint16_t port;
 
-	debug("[DLCM] slurm_protocol_api.c slurm_open_controller_conn L861");
-
 	if (!comm_cluster_rec) {
 		/* This means the addr wasn't set up already */
 		if (!(proto_conf = _slurm_api_get_comm_config()))

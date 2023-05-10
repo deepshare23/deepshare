@@ -18,7 +18,7 @@ def _parse_args():
                       help="number of nodes")
   parser.add_argument("--gpus-per-node", type=int, default=8,
                       help="number of GPUs per node")
-  parser.add_argument("--job-trace", default=f"{os.environ['DLCM_PATH']}/simulator/traces/simulate/0/trace", type=str, metavar="PATH",
+  parser.add_argument("--job-trace", default=f"{os.environ['DEEPSHARE_PATH']}/simulator/traces/simulate/0/trace", type=str, metavar="PATH",
                       help="path to job trace file")
   parser.add_argument("--model-checkpoint", default="/cmsdata/ssd0/cmslab/dlcm_data/rl-dlcm-ckpt", type=str, metavar="PATH",
                       help="path to model ckpt file")

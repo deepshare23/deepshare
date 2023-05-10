@@ -4,7 +4,7 @@
 Install the required packages. 
 ```
 pip install -r requirements.txt
-cd ../stable-baselines3 && pip install -e .
+cd stable-baseline3 && pip install -e .
 ```
 
 ## Training with Simulator

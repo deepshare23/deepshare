@@ -709,13 +709,6 @@ static void _init_node_record(node_record_t *node_ptr,
 	node_ptr->tot_cores = config_ptr->tot_sockets * config_ptr->cores;
 	node_ptr->weight = config_ptr->weight;
 
-	// [DLCM] Init `node_resource_stat` members to 0
-	node_ptr->resource_stat.gpu_util = 0.0;
-	node_ptr->resource_stat.cpu_util = 0.0;
-	node_ptr->resource_stat.mem_util = 0.0;
-	node_ptr->resource_stat.network_util = 0.0;
-	debug("[DLCM] node_conf.c _init_node_record L717: Init node_resource_stat members to 0.0");
-
 	/*
 	 * Here we determine if this node is scheduling threads or not.
 	 * We will set tpc to be the number of schedulable threads per core.

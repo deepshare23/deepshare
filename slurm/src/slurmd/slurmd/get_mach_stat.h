@@ -47,12 +47,4 @@ extern int get_memory(uint64_t *real_memory);
 extern int get_tmp_disk(uint32_t *tmp_disk, char *tmp_fs);
 extern int get_up_time(uint32_t *up_time);
 
-/*
- * [DLCM] Node resource stat monitor interface
- */
-extern int get_gpu_util(float *gpu_util);
-extern int get_cpu_util(float *cpu_util);
-extern int get_mem_util(float *mem_util);
-extern int get_network_util(float *network_util);
-
 #endif	/* _GET_MACH_STAT_H */

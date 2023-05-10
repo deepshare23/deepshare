@@ -5,7 +5,7 @@ from typing import TypeVar
 
 Trainable = TypeVar("T")
 
-class DLCMJobCheckpointer(metaclass=ABCMeta):
+class DeepShareJobCheckpointer(metaclass=ABCMeta):
     def __init__(self, checkpoint_path='', hdfs_ckpt_dir=''):
         self._checkpoint_path = checkpoint_path
         self._hdfs_ckpt_dir = hdfs_ckpt_dir
@@ -30,7 +30,7 @@ class DLCMJobCheckpointer(metaclass=ABCMeta):
     def load(self) -> Trainable:
         pass
 
-class DummyDLCMJobCheckpointer(DLCMJobCheckpointer):
+class DummyDeepShareJobCheckpointer(DeepShareJobCheckpointer):
     def save(self) -> None:
         pass
 

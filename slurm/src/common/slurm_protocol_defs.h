@@ -461,10 +461,6 @@ typedef enum {
 	SLURMSCRIPTD_REQUEST_UPDATE_DEBUG_FLAGS,
 	SLURMSCRIPTD_REQUEST_UPDATE_LOG,
 	SLURMSCRIPTD_SHUTDOWN,
-
-	// DLCM message types
-	REQUEST_RESOURCE_STATUS = 20000,
-	RESPONSE_RESOURCE_STATUS,
 } slurm_msg_type_t;
 
 /*****************************************************************************\
@@ -970,15 +966,6 @@ typedef struct network_callerid_resp {
 	uint32_t return_code;
 	char *node_name;
 } network_callerid_resp_t;
-
-typedef struct node_resource_stat_monitor_resp {
-	float gpu_util;
-	float cpu_util;
-	float mem_util;
-	float network_util;
-	uint32_t return_code;
-	char *node_name;
-} node_resource_stat_monitor_resp_t;
 
 typedef struct composite_msg {
 	slurm_addr_t sender;	/* address of sending node/port */
@@ -1617,7 +1604,6 @@ extern void slurm_free_license_info_request_msg(license_info_request_msg_t *msg)
 extern uint32_t slurm_get_return_code(slurm_msg_type_t type, void *data);
 extern void slurm_free_network_callerid_msg(network_callerid_msg_t *mesg);
 extern void slurm_free_network_callerid_resp(network_callerid_resp_t *resp);
-extern void slurm_free_node_response_stat_monitor_resp(node_resource_stat_monitor_resp_t *resp);
 extern void slurm_free_set_fs_dampening_factor_msg(
 	set_fs_dampening_factor_msg_t *msg);
 extern void slurm_free_control_status_msg(control_status_msg_t *msg);

@@ -397,10 +397,6 @@ slurmd_req(slurm_msg_t *msg)
 	case REQUEST_NETWORK_CALLERID:
 		_rpc_network_callerid(msg);
 		break;
-	case REQUEST_RESOURCE_STATUS:
-		_rpc_node_resource_stat_monitor(msg);
-		last_slurmctld_msg = time(NULL);
-		break;
 	default:
 		error("slurmd_req: invalid request msg type %d",
 		      msg->msg_type);
@@ -3733,39 +3729,6 @@ static void _rpc_network_callerid(slurm_msg_t *msg)
 
 	slurm_send_node_msg(msg->conn_fd, &resp_msg);
 	slurm_free_network_callerid_resp(resp);
-}
-
-static void _rpc_node_resource_stat_monitor(slurm_msg_t *msg)
-{
-	slurm_msg_t      resp_msg;
-	node_resource_stat_monitor_resp_t *resp = NULL;
-
-	debug("[DLCM] req.c _rpc_node_resource_stat_monitor L3743 Received msg from ctld");
-
-	resp = xmalloc(sizeof(node_resource_stat_monitor_resp_t));
-	resp->node_name = xstrdup(conf->node_name);
-
-	// TODO: [DLCM] Should report averaged stat over the past time interval, not point stat 
-	// since stat value fluctuates with high variance. 
-	get_gpu_util(&resp->gpu_util);
-	get_cpu_util(&resp->cpu_util);
-	get_mem_util(&resp->mem_util);
-	get_network_util(&resp->network_util);
-
-	debug("[DLCM] req.c _rpc_node_resource_stat_monitor L3750 node: %s\n\
-	gpu_util: %.1f\n\
-	cpu_util: %.1f\n\
-	mem_util: %.1f\n\
-	network_util: %.1f",\
-	resp->node_name, resp->gpu_util, resp->cpu_util, resp->mem_util, resp->network_util);
-
-	slurm_msg_t_copy(&resp_msg, msg);
-	resp_msg.msg_type = RESPONSE_RESOURCE_STATUS;
-	resp_msg.data     = resp;
-	slurm_send_node_msg(msg->conn_fd, &resp_msg);
-	slurm_free_node_response_stat_monitor_resp(resp);
-
-	debug("[DLCM] req.c _rpc_node_resource_stat_monitor L3761 Responded msg to ctld");
 }
 
 static void _rpc_list_pids(slurm_msg_t *msg)

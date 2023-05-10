@@ -1,5 +1,5 @@
 import utils.hdfs
-from utils.checkpoint import DLCMJobCheckpointer
+from utils.checkpoint import DeepShareJobCheckpointer
 
 from collections import OrderedDict
 import logging
@@ -99,7 +99,7 @@ def resume_checkpoint(model, hdfs_ckpt_dir, checkpoint_path, optimizer=None, los
 """
 Simplified version of the checkpoint saver in the original timm codebase.
 """
-class TIMMDLCMJobCheckpointer(DLCMJobCheckpointer):
+class TIMMDeepShareJobCheckpointer(DeepShareJobCheckpointer):
     def setup(
             self,
             model,

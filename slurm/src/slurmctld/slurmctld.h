@@ -2953,14 +2953,4 @@ extern hostlist_t nodespec_to_hostlist(const char *nodes, char **nodesets);
  */
 extern void set_node_reboot_reason(node_record_t *node_ptr, char *message);
 
-/*
- * [DLCM node status monitor] Issue #51
- * 
- * Update node resource stat 
- * IN node_resource_stat - pointer to node resource stats received from slurmd
- * 
- * TODO: Integrate this function inside `update_node`
- */
-extern int update_node_resource_stat(node_resource_stat_monitor_resp_t* node_resource_stat);
-
 #endif /* !_HAVE_SLURMCTLD_H */

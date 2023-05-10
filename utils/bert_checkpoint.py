@@ -1,5 +1,5 @@
 import utils.hdfs
-from utils.checkpoint import DLCMJobCheckpointer
+from utils.checkpoint import DeepShareJobCheckpointer
 
 import subprocess
 import os
@@ -57,7 +57,7 @@ def resume_checkpoint(model, hdfs_ckpt_dir, checkpoint_path, optimizer=None):
         raise FileNotFoundError()
 
 
-class SimpleDLCMCheckpointer(DLCMJobCheckpointer):
+class SimpleDeepShareCheckpointer(DeepShareJobCheckpointer):
     def setup(
             self,
             model,

@@ -5,7 +5,7 @@
 `$SLURM_CONF_DIR` should be set to the path to Slurm configuration files. Slurm will try to find its `slurm.conf`, `gres.conf`, `cgroup.conf`, etc., under this path. `SLURM_CONF` should be set to the path to `slurm.conf` under `$SLURM_CONF_DIR` according to [`controller.c`](/slurm/src/slurmctld/controller.c/#L303).
 
 ```
-export $SLURM_CONF_DIR = {PATH_TO_SLURM_CONF_FILES} # $DLCM_PATH/slurm/etc
+export $SLURM_CONF_DIR = {PATH_TO_SLURM_CONF_FILES} # $DEEPSHARE_PATH/slurm/etc
 export $SLURM_CONF = {PATH_TO_SLURM_CONF} # $SLURM_CONF_DIR/slurm.conf
 ```
 

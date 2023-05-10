@@ -3,11 +3,12 @@ import os
 import logging
 import re
 
+from scheduler.rl_training.config import NODELIST
 
 _logger = logging.getLogger()
 
-NODELIST = ["elsa-10", "elsa-11", "elsa-13", "elsa-15"]
-JOB_SCRIPT_DIR=os.path.join(os.environ["DLCM_PATH"], "slurm/examples/job_launch_scripts/isolated")
+nodelist = NODELIST 
+JOB_SCRIPT_DIR=os.path.join(os.environ["DEEPSHARE_PATH"], "slurm_examples/job_launch_scripts/isolated")
 MODEL_TO_SCRIPT_DICT={
     'MobileNetV3': os.path.join(JOB_SCRIPT_DIR, "timm_{:d},{:d}.sh"),
     'GraphSage': os.path.join(JOB_SCRIPT_DIR, "graphsage_{:d},{:d}.sh"),
@@ -25,12 +26,12 @@ MODEL_TO_SCRIPT_DICT={
 # Return
 # - slurm_job_id: Slurm job id assigned. Should be registered on job_id_to_slurm_job_id_mapper in ClusterEnv
 def slurm_launch(job, placement, prev_slurm_job_id=None) -> int:
-  nodelist = ",".join([NODELIST[i] for i in placement])
+  nodelist = ",".join([nodelist[i] for i in placement])
   num_nodes_to_schedule = len(placement)
   total_gpu_demand = job.total_gpu_demand
 
   script = MODEL_TO_SCRIPT_DICT[job.workload].format(total_gpu_demand, num_nodes_to_schedule)
-  batch_cmd = f"sbatch --nodelist={nodelist} {script}"
+  batch_cmd = f"sbatch --nodelist={nodelist} {script} --output={os.environ['DEEPSHARE_PATH']}/slurm_examples/out/%j.out"
   _logger.debug(f"batch_cmd: {batch_cmd}")
 
   # TODO: Search hdfs ckpt path if `prev_slurm_job_id` != None. Modify job launch command to make the job resume from given ckpt.

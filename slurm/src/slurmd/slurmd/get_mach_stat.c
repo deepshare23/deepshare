@@ -282,17 +282,12 @@ static int _read_float_stat_from_command(char* command, float* stat)
 	FILE* fpipe;
 
 	if ((fpipe = (FILE*)popen(command, "r")) == NULL) {
-		debug("[DLCM] get_mach_stat.c _read_float_stat_from_command popen command:\n \
-		%s", command); 
 		return errno;
 	}
 
 	char* f = xmalloc(sizeof(float));
 
-	// TODO: [DLCM] `fread` often produce errors. Figure out the root cause and fix it.
-	if (fread((void*)f, sizeof(float), 1, fpipe) <= 0) {
-		debug("[DLCM] get_mach_stat.c _read_float_stat_from_command fread command:\n \
-		%s", command); 
+	if (fread((void*)f, sizeof(float), 1, fpipe) <= 0) { 
 		return errno;	
 	}
 

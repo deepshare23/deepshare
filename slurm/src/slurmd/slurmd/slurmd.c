@@ -1241,8 +1241,6 @@ _reconfigure(void)
 	/*
 	 * XXX: reopen slurmd port?
 	 */
-
-	debug("[DLCM] slurmd.c _reconfigure L1245");
 }
 
 static void

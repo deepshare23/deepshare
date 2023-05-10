@@ -18,15 +18,15 @@ def enforce_root(func):
     return wrapper
 
 
-""" DLCM Profiler module
+""" DeepShare Profiler module
 - Progress profiler: Monitors batch processing time and estimated epoch time (batch time * batches per epoch).
 - GPU profiler: Extension of PyTorch profiler. Can be installed by setting `profile_gpu` argument to True when installing
-                general profiler in DLCMSlurmHandler.
+                general profiler in DeepShareSlurmHandler.
 - CPU profiler: Monitors utilization(%) of job's allocated CPUs. Can be installed by setting `profile_cpu` argument to True
-                when installing general profiler in DLCMSlurmHandler. Profiles CPU utilization every `cpu_profile_interval`
+                when installing general profiler in DeepShareSlurmHandler. Profiles CPU utilization every `cpu_profile_interval`
                 seconds. `start/stop_cpu_profile()` should be called explicitly by the job.
 """
-class DLCMProfiler:
+class DeepShareProfiler:
     def __init__(self, profile_path: str = './', batches_per_epoch: int = None, profile_iteration: int = 0,
                 cpu_profile_interval: float = 0.1, cpu_ids: list = []):
 

@@ -817,8 +817,6 @@ static void *_sched_agent(void *args)
 	}
 #endif
 
-	debug("[DLCM] job_scheduler.c _sched_agent L820 sched_min_interval: %d", sched_min_interval);
-
 	while (!slurmctld_config.shutdown_time) {
 
 		slurm_mutex_lock(&sched_mutex);
@@ -850,20 +848,6 @@ static void *_sched_agent(void *args)
 			} else {
 				slurm_cond_wait(&sched_cond, &sched_mutex);
 			}
-		}
-
-		/*
-		 * [DLCM node status monitor] Issue #51
-		 * 
-		 * For every sched_min_interval, slurmctld requests each node to report node status
-		 * and saves the reported status to the global DS
-		 */
-		sched_debug("[DLCM] job_scheduler.c _sched_agent L861 Send 'node monitor' RPC to each node");
-		node_record_t *node_ptr;
-
-		// TODO: [DLCM] Use slurm threads for parallel execution of this code
-		for (int i = 0; (node_ptr = next_node(&i)); i++) {
-			node_resource_stat_monitor(node_ptr);
 		}
 
 		full_queue = sched_full_queue;
@@ -1300,9 +1284,6 @@ static int _schedule(bool full_queue)
 	if (!avail_front_end(NULL)) {
 		ListIterator job_iterator = list_iterator_create(job_list);
 		while ((job_ptr = list_next(job_iterator))) {
-
-			debug("[DLCM] job_scheduler.c _schedule() L1290 job_ptr->job_id %d", job_ptr->job_id);
-
 			if (!IS_JOB_PENDING(job_ptr))
 				continue;
 			if ((job_ptr->state_reason != WAIT_NO_REASON) &&
@@ -2591,48 +2572,6 @@ static void _set_het_job_env(job_record_t *het_job_leader,
 	for (i = 0; launch_msg_ptr->environment[i]; i++)
 		;
 	launch_msg_ptr->envc = i;
-}
-
-/*
- * node_resource_stat_monitor - send an RPC to a slurmd to report its resource util status
- * IN node_ptr - pointer to the requested node
- */
-extern void node_resource_stat_monitor(node_record_t* node_ptr)
-{
-	slurm_msg_t req, resp;
-	node_resource_stat_monitor_resp_t* node_resource_stat;
-
-	debug("[DLCM] job_scheduler.c node_resource_stat_monitor L2607: Sending msg to %s", node_ptr->name);
-	
-	slurm_msg_t_init(&req);
-	slurm_set_addr(&req.address, node_ptr->port, node_ptr->node_hostname);
-	req.msg_type = REQUEST_RESOURCE_STATUS;
-	slurm_msg_set_r_uid(&req, SLURM_AUTH_UID_ANY); // necessary?
-
-	if (slurm_send_recv_node_msg(&req, &resp, 0) == SLURM_SUCCESS) {
-		char msg[128];
-
-		sprintf(msg, "Sent msg to Node: %s", node_ptr->name);
-		debug("[DLCM] job_scheduler.c node_resource_stat_monitor L2600: %s", msg);
-
-		if (resp.msg_type == RESPONSE_RESOURCE_STATUS) {
-			node_resource_stat = (node_resource_stat_monitor_resp_t*)resp.data;
-
-			if (update_node_resource_stat(node_resource_stat) == SLURM_SUCCESS) {
-				char success_msg[128];
-				sprintf(success_msg, "[DLCM] Successfully updated node resource stat for %s", node_resource_stat->node_name);
-				debug(success_msg);
-			} else {
-				char err_msg[128];
-				sprintf(err_msg, "[DLCM] Failed to update node resource stat for %s", node_ptr->name);
-				debug(err_msg);
-			}
-		}
-	} else { 
-		char* err_msg = "Failed to send node message request for node resource stat";
-		debug("[DLCM] job_scheduler.c node_resource_stat_monitor L2628: %s", err_msg);
-	}
-
 }
 
 /*

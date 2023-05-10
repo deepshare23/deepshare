@@ -2036,34 +2036,6 @@ config_record_t *_dup_config(config_record_t *config_ptr)
 }
 
 /*
- * [DLCM node status monitor] Issue #51
- * 
- * Update node resource stat 
- * IN node_resource_stat - pointer to node resource stats received from slurmd
- * 
- * TODO: Integrate this function inside `update_node`
- */
-extern int update_node_resource_stat(node_resource_stat_monitor_resp_t* node_resource_stat)
-{	
-	node_record_t* node_ptr;
-	int error_code = SLURM_SUCCESS;
-
-	node_ptr = find_node_record(node_resource_stat->node_name);
-	if (node_ptr == NULL) {
-		error ("update_node: node %s does not exist",
-			node_resource_stat->node_name);
-		error_code = ESLURM_INVALID_NODE_NAME;
-	} else {
-		node_ptr->resource_stat.gpu_util = node_resource_stat->gpu_util;
-		node_ptr->resource_stat.cpu_util = node_resource_stat->cpu_util;
-		node_ptr->resource_stat.mem_util = node_resource_stat->mem_util;
-		node_ptr->resource_stat.network_util = node_resource_stat->network_util;
-	}
-
-	return error_code;
-}
-
-/*
  * _update_node_weight - Update weight associated with nodes
  *	build new config list records as needed
  * IN node_names - List of nodes to update

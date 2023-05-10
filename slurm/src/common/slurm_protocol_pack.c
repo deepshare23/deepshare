@@ -431,53 +431,6 @@ unpack_error:
 	return SLURM_ERROR;
 }
 
-static void _pack_node_resource_stat_monitor_resp_msg(node_resource_stat_monitor_resp_t *msg,
-					    buf_t *buffer,
-					    uint16_t protocol_version)
-{
-	xassert(msg);
-
-	if (protocol_version >= SLURM_MIN_PROTOCOL_VERSION) {
-		packfloat(msg->gpu_util,		buffer);
-		packfloat(msg->cpu_util,		buffer);
-		packfloat(msg->mem_util,		buffer);
-		packfloat(msg->network_util,		buffer);
-		pack32(msg->return_code,	buffer);
-		packstr(msg->node_name,		buffer);
-	}
-}
-
-
-static int _unpack_node_resource_stat_monitor_resp_msg(node_resource_stat_monitor_resp_t **msg_ptr,
-					     buf_t *buffer,
-					     uint16_t protocol_version)
-{
-	uint32_t uint32_tmp;
-	node_resource_stat_monitor_resp_t *msg;
-	xassert(msg_ptr);
-
-	msg = xmalloc(sizeof(node_resource_stat_monitor_resp_t));
-	*msg_ptr = msg;
-
-	if (protocol_version >= SLURM_MIN_PROTOCOL_VERSION) {
-		safe_unpackfloat(&msg->gpu_util,		buffer);
-		safe_unpackfloat(&msg->cpu_util,		buffer);
-		safe_unpackfloat(&msg->mem_util,		buffer);
-		safe_unpackfloat(&msg->network_util,		buffer);
-		safe_unpack32(&msg->return_code,	buffer);
-		safe_unpackmem_xmalloc(&msg->node_name, &uint32_tmp, buffer);
-	}
-
-	debug("[DLCM] slurm_protocol_pack.c _unpack_node_resource_stat_monitor_resp_msg L3765 Received msg from slurmd(node: %s)", msg->node_name); 
-
-	return SLURM_SUCCESS;
-
-unpack_error:
-	*msg_ptr = NULL;
-	slurm_free_node_response_stat_monitor_resp(msg);
-	return SLURM_ERROR;
-}
-
 static void _pack_shares_request_msg(shares_request_msg_t *msg, buf_t *buffer,
 				     uint16_t protocol_version)
 {
@@ -12800,7 +12753,6 @@ pack_msg(slurm_msg_t const *msg, buf_t *buffer)
 	case REQUEST_BURST_BUFFER_INFO:
 	case REQUEST_FED_INFO:
 	case SRUN_PING:
-	case REQUEST_RESOURCE_STATUS:
 		/* Message contains no body/information */
 		break;
 	case REQUEST_ACCT_GATHER_ENERGY:
@@ -13262,11 +13214,6 @@ pack_msg(slurm_msg_t const *msg, buf_t *buffer)
 	case RESPONSE_UPDATE_CRONTAB:
 		_pack_crontab_update_response_msg(msg, buffer);
 		break;
-	case RESPONSE_RESOURCE_STATUS:
-		_pack_node_resource_stat_monitor_resp_msg((node_resource_stat_monitor_resp_t *)
-						msg->data, buffer,
-						msg->protocol_version);
-		break;
 	default:
 		debug("No pack method for msg type %u", msg->msg_type);
 		return EINVAL;
@@ -13426,7 +13373,6 @@ unpack_msg(slurm_msg_t * msg, buf_t *buffer)
 	case REQUEST_BURST_BUFFER_INFO:
 	case REQUEST_FED_INFO:
 	case SRUN_PING:
-	case REQUEST_RESOURCE_STATUS:
 		/* Message contains no body/information */
 		break;
 	case REQUEST_ACCT_GATHER_ENERGY:
@@ -13959,11 +13905,6 @@ unpack_msg(slurm_msg_t * msg, buf_t *buffer)
 		break;
 	case RESPONSE_UPDATE_CRONTAB:
 		rc = _unpack_crontab_update_response_msg(msg, buffer);
-		break;
-	case RESPONSE_RESOURCE_STATUS:
-		rc = _unpack_node_resource_stat_monitor_resp_msg(
-			(node_resource_stat_monitor_resp_t **)&(msg->data), buffer,
-			msg->protocol_version);
 		break;
 	default:
 		debug("No unpack method for msg type %u", msg->msg_type);

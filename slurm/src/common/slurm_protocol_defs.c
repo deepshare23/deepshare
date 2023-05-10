@@ -4778,14 +4778,6 @@ extern void slurm_free_network_callerid_resp(network_callerid_resp_t *resp)
 	}
 }
 
-extern void slurm_free_node_response_stat_monitor_resp(node_resource_stat_monitor_resp_t *resp)
-{
-	if (resp) {
-		xfree(resp->node_name);
-		xfree(resp);
-	}
-}
-
 extern void slurm_free_trigger_msg(trigger_info_msg_t *msg)
 {
 	int i;

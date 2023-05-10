@@ -193,7 +193,6 @@ struct node_record {
 	uint32_t weight;		/* orignal weight, used only for state
 					 * save/restore, DO NOT use for
 					 * scheduling purposes. */
-	node_resource_stat_t resource_stat;		/* DLCM node monitoring purposes */
 };
 extern node_record_t **node_record_table_ptr;  /* ptr to node records */
 extern int node_record_count;		/* count in node_record_table_ptr */
