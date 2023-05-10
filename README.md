@@ -15,6 +15,7 @@ Requires
 1. Clone 
 ```
 git clone --recurse-submodules git@github.com:deepshare23/deepshare.git
+git submodule foreach --recursive "git checkout $(git remote show origin | grep 'HEAD branch' | sed 's/.*: //')"
 ```
 
 2. Set ENVs 
