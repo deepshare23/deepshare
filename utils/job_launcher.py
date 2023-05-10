@@ -5,9 +5,9 @@ import re
 
 from scheduler.rl_training.config import NODELIST
 
+
 _logger = logging.getLogger()
 
-nodelist = NODELIST 
 JOB_SCRIPT_DIR=os.path.join(os.environ["DEEPSHARE_PATH"], "slurm_examples/job_launch_scripts/isolated")
 MODEL_TO_SCRIPT_DICT={
     'MobileNetV3': os.path.join(JOB_SCRIPT_DIR, "timm_{:d},{:d}.sh"),
@@ -26,7 +26,7 @@ MODEL_TO_SCRIPT_DICT={
 # Return
 # - slurm_job_id: Slurm job id assigned. Should be registered on job_id_to_slurm_job_id_mapper in ClusterEnv
 def slurm_launch(job, placement, prev_slurm_job_id=None) -> int:
-  nodelist = ",".join([nodelist[i] for i in placement])
+  nodelist = ",".join([NODELIST[i] for i in placement])
   num_nodes_to_schedule = len(placement)
   total_gpu_demand = job.total_gpu_demand
 
