@@ -19,7 +19,7 @@
 
 # setup related
 /build
-/dlcm.egg-info
+*.egg-info
 
 # Models related
 /profiler/models/image_model/output
