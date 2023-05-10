@@ -60,7 +60,6 @@ conda create -n deepshare+slurm python=3.9 -y
 4. Set up packages (editable mode)
 ```
 pip install -e .
-cd stable-baseline3 && pip install -e .
 ```
 
 This will add packages (and some misc dependencies) listed at `setup.py`
