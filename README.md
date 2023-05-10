@@ -20,21 +20,21 @@ git clone --recurse-submodules git@github.com:deepshare23/deepshare.git
 2. Set ENVs 
 ```
 # DEEPSHARE
-export DEEPSHARE_PATH="$HOME/deepshare"
-export DEEPSHARE_CONDA_ENV="deepshare+slurm"
+export DEEPSHARE_PATH=$HOME/deepshare
+export DEEPSHARE_CONDA_ENV=deepshare+slurm
 
 # SLURM
-export SLURM_BUILD_PATH="$HOME/slurm_build"
-export PATH="$SLURM_BUILD_PATH/bin:$PATH"
-export SLURM_CONF_DIR="$DEEPSHARE_PATH/slurm/etc"
-export SLURM_CONF="$SLURM_CONF_DIR/slurm.conf"
+export SLURM_BUILD_PATH=/path/to/build/slurm
+export PATH=$SLURM_BUILD_PATH/bin:$PATH
+export SLURM_CONF_DIR=$DEEPSHARE_PATH/slurm/etc
+export SLURM_CONF=$SLURM_CONF_DIR/slurm.conf
 
 # HDFS
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-export HADOOP_HOME=$HOME/hadoop-3.3.4
+export JAVA_HOME=/path/to/java
+export HADOOP_HOME=/path/to/hdfs
 export HADOOP_BIN=$HADOOP_HOME/bin
 export HADOOP_SBIN=$HADOOP_HOME/sbin
-export HADOOP_DIR=/cmsdata/hdd0/dlcm_hdfs_dir
+export HADOOP_DIR=/path/to/hdfs/mounted/dir
 export PATH=$JAVA_HOME:$HADOOP_SBIN:$HADOOP_BIN:$HADOOP_DIR:$HADOOP_HOME:$PATH
 
 # CONDA
